@@ -1,0 +1,850 @@
+@page "/onboarding-slider"
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+
+<div class="slider-container" @ontouchstart="OnTouchStart" @ontouchmove="OnTouchMove" @ontouchend="OnTouchEnd"
+     @onmousedown="OnMouseDown" @onmousemove="OnMouseMove" @onmouseup="OnMouseUp" @onmouseleave="OnMouseUp">
+    <div class="slides-wrapper" style="transform: translateX(@($"{-currentSlide * 33.333333}%"))">
+        
+        <!-- Slide 1: Welcome -->
+        <div class="slide">
+            <div class="onboarding-container">
+                <!-- Content Section -->
+                <div class="content-section">
+                    <!-- Logo -->
+                    <div class="logo-container">
+                        <div class="logo-icon">
+                            <img src="/images/gatesale-logo.png" alt="GATESALE Logo" class="logo-image" />
+                        </div>
+                    </div>
+
+                    <!-- Tagline -->
+                    <p class="tagline">A safe marketplace just for students.</p>
+
+                    <!-- Illustration Card -->
+                    <div class="illustration-card">
+                        <!-- Onboarding illustration -->
+                        <img src="/images/onboarding-1.jpg" alt="Students connecting safely" class="illustration-img" />
+
+                        <!-- Floating icons (match reference image) -->
+                        <div class="icon-heart" title="Trusted Community">
+                            <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <path d="M20.84 4.61C19.32 3.04 17.06 3.04 15.54 4.61L12 8.15L8.46 4.61C6.94 3.04 4.68 3.04 3.16 4.61C1.64 6.18 1.64 8.82 3.16 10.39L12 19.23L20.84 10.39C22.36 8.82 22.36 6.18 20.84 4.61Z" fill="white"/>
+                            </svg>
+                        </div>
+
+                        <div class="icon-shield" title="Safe & Secure">
+                            <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <path d="M12 1L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1ZM12 7C13.1 7 14 7.9 14 9S13.1 11 12 11S10 10.1 10 9S10.9 7 12 7ZM12 17C10.67 17 9.67 16.33 9.67 15.5C9.67 14.67 10.67 14 12 14S14.33 14.67 14.33 15.5C14.33 16.33 13.33 17 12 17Z" fill="white"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Section -->
+                <div class="bottom-section">
+                    <!-- Button -->
+                    <button class="next-button" @onclick="() => GoToSlide(1)">Next</button>
+
+                    <!-- Skip text -->
+                    <p class="skip-text" @onclick="SkipOnboarding">Skip for now</p>
+
+                    <!-- Progress dots -->
+                    <div class="progress-indicator">
+                        <div class="progress-step @(currentSlide == 0 ? "active" : "")"></div>
+                        <div class="progress-step @(currentSlide == 1 ? "active" : "")"></div>
+                        <div class="progress-step @(currentSlide == 2 ? "active" : "")"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Onboarding2 -->
+        <div class="slide">
+            <div class="onboarding-container">
+                <!-- Progress Indicator -->
+                <div class="progress-indicator">
+                    <div class="progress-step @(currentSlide == 0 ? "active" : "")"></div>
+                    <div class="progress-step @(currentSlide == 1 ? "active" : "")"></div>
+                    <div class="progress-step @(currentSlide == 2 ? "active" : "")"></div>
+                </div>
+
+                <!-- Title -->
+                <h1 class="main-title">Buy and Sell Easily</h1>
+
+                <!-- Feature Icons with central connector -->
+                <div class="feature-icons">
+                    <!-- Center Line (visually behind icons) -->
+                    <div class="connector-line connector-1"></div>
+
+                    <!-- Camera Icon -->
+                    <div class="icon-container">
+                        <div class="icon-square camera-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                                <path d="M9 2L7.17 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4H16.83L15 2H9ZM12 17C9.24 17 7 14.76 7 12C7 9.24 9.24 7 12 7C14.76 7 17 9.24 17 12C17 14.76 14.76 17 12 17ZM12 9C10.34 9 9 10.34 9 12C9 13.66 10.34 15 12 15C13.66 15 15 13.66 15 12C15 10.34 13.66 9 12 9Z" fill="white"/>
+                            </svg>
+                        </div>
+                        <div class="icon-dot"></div>
+                    </div>
+                    
+                    <!-- Truck Icon -->
+                    <div class="icon-container">
+                        <div class="icon-square truck-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                                <path d="M20 8H17V4H3C1.9 4 1 4.9 1 6V17H3C3 18.66 4.34 20 6 20S9 18.66 9 17H15C15 18.66 16.34 20 18 20S21 18.66 21 17H23V12L20 8ZM19.5 9.5L21.46 12H17V9.5H19.5ZM6 18.5C5.17 18.5 4.5 17.83 4.5 17S5.17 15.5 6 15.5S7.5 16.17 7.5 17S6.83 18.5 6 18.5ZM18 18.5C17.17 18.5 16.5 17.83 16.5 17S17.17 15.5 18 15.5S19.5 16.17 19.5 17S18.83 18.5 18 18.5Z" fill="white"/>
+                            </svg>
+                        </div>
+                        <div class="icon-dot"></div>
+                    </div>
+                    <div class="connector-line connector-2"></div>
+                    <!-- Smiley Icon -->
+                    <div class="icon-container">
+                        <div class="icon-square smiley-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="12" r="10" fill="white"/>
+                                <circle cx="8" cy="10" r="1.5" fill="#2196F3"/>
+                                <circle cx="16" cy="10" r="1.5" fill="#2196F3"/>
+                                <path d="M8 14s1.5 2 4 2 4-2 4-2" stroke="#2196F3" stroke-width="1.5" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div class="icon-dot"></div>
+                    </div>
+                </div>
+
+                <!-- Features List -->
+                <div class="features-list">
+                    <div class="feature-item">
+                        <div class="checkmark">✓</div>
+                        <span>List your items in seconds</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="checkmark">✓</div>
+                        <span>Buy safely — payments and deliveries are handled by us</span>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="navigation-section">
+                    <button class="next-button" @onclick="() => GoToSlide(2)">Next</button>
+                    <p class="skip-text" @onclick="SkipOnboarding">Skip</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Onboarding3 -->
+        <div class="slide">
+            <div class="onboarding-container">
+                <!-- Progress Indicator -->
+                <div class="progress-indicator">
+                    <div class="progress-step @(currentSlide == 0 ? "active" : "")"></div>
+                    <div class="progress-step @(currentSlide == 1 ? "active" : "")"></div>
+                    <div class="progress-step @(currentSlide == 2 ? "active" : "")"></div>
+                </div>
+
+                <!-- Title -->
+                <div class="title-section">
+                    <h1 class="main-title">
+                        Safe for You — <br>
+                        <span class="highlight-text">Peace of Mind</span><br>
+                        for Parents
+                    </h1>
+                </div>
+
+                <!-- Central Illustration -->
+                <div class="illustration-section">
+                    <div class="illustration-circle">
+                        <!-- Connecting dotted lines -->
+                        <div class="line-to-student"></div>
+                        <div class="line-to-parent"></div>
+                        <div class="line-to-email"></div>
+
+                        <!-- Student Icon (Top Left) -->
+                        <div class="icon-student">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M12 3L1 9L12 15L21 9V16H23V9M5 13.18V17.18L12 21L19 17.18V13.18L12 17L5 13.18Z" fill="white" />
+                            </svg>
+                        </div>
+
+                        <!-- Parent Icon (Top Right) -->
+                        <div class="icon-parent">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M12 12C14.21 12 16 10.21 16 8S14.21 4 12 4 8 5.79 8 8 9.79 12 12 12M12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z" fill="white" />
+                            </svg>
+                        </div>
+
+                        <!-- Question Mark Icon (Center) -->
+                        <div class="icon-shield-center">
+                            <svg class="question-svg" width="32" height="32" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="12" fill="#4caf50" stroke="white" stroke-dasharray="2,2" stroke-width="2" />
+                                <path d="M13,19H11V17H13V19ZM15.07,11.25L14.17,12.17C13.45,12.9 13,13.5 13,15H11V14.5
+                                         C11,13.4 11.45,12.4 12.17,11.67L13.41,10.41C13.78,10.05 14,9.55 14,9
+                                         C14,7.9 13.1,7 12,7C10.9,7 10,7.9 10,9H8C8,6.79 9.79,5 12,5C14.21,5
+                                         16,6.79 16,9C16,9.88 15.64,10.68 15.07,11.25Z"
+                                      fill="white" />
+                            </svg>
+                        </div>
+
+                        <!-- Email Icon (Bottom) -->
+                        <div class="icon-email">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M20 4H4C2.9 4 2.01 4.9 2.01 6L2 18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z" fill="white" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Features List (Now in Cards) -->
+                <div class="features-section">
+                    <!-- Card 1 -->
+                    <div class="feature-card">
+                        <div class="feature-item-card">
+                            <div class="feature-icon student-verify">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                    <path d="M12 12C14.21 12 16 10.21 16 8S14.21 4 12 4 8 5.79 8 8 9.79 12 12 12M12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z" fill="white" />
+                                </svg>
+                            </div>
+                            <div class="feature-content">
+                                <h3>We verify every student</h3>
+                                <p>Your school email ensures only verified students can join your marketplace</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="feature-card">
+                        <div class="feature-item-card">
+                            <div class="feature-icon parent-consent">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                    <path d="M18 16.08C17.24 16.08 16.56 16.38 16.04 16.85L8.91 12.7C8.96 12.47 9 12.24 9 12S8.96 11.53 8.91 11.3L15.96 7.19C16.5 7.69 17.21 8 18 8C19.66 8 21 6.66 21 5S19.66 2 18 2 15 3.34 15 5C15 5.24 15.04 5.47 15.09 5.7L8.04 9.81C7.5 9.31 6.79 9 6 9C4.34 9 3 10.34 3 12S4.34 15 6 15C6.79 15 7.5 14.69 8.04 14.19L15.16 18.34C15.11 18.55 15.08 18.77 15.08 19C15.08 20.61 16.39 21.92 18 21.92S20.92 20.61 20.92 19 19.61 17.08 18 17.08" fill="white" />
+                                </svg>
+                            </div>
+                            <div class="feature-content">
+                                <h3>Parents give consent before you can start</h3>
+                                <p>We'll send a quick email to get parental approval for buying or selling</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="navigation-section">
+                    <button class="get-started-button" @onclick="GetStarted">Get Started</button>
+                    <p class="disclaimer-text">By continuing, you agree to our Terms of Service and Privacy Policy</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Slider Container */
+    .slider-container {
+        width: 100%;
+        max-width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        position: relative;
+        box-sizing: border-box;
+    }
+
+    .slides-wrapper {
+        display: flex;
+        width: 300%;
+        height: 100vh;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .slide {
+        width: 33.333333%;
+        height: 100vh;
+        flex-shrink: 0;
+        min-width: 33.333333%;
+        overflow-y: auto;
+    }
+
+    /* Welcome Page Styles */
+    .onboarding-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        min-height: 100vh;
+        justify-content: space-between;
+        max-width: 400px;
+        width: 100%;
+        margin: 0 auto;
+        overflow-y: auto;
+        box-sizing: border-box;
+    }
+
+    .content-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .logo-container {
+        margin-top: 40px;
+        margin-bottom: 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .logo-icon {
+        margin-bottom: 12px;
+    }
+
+    .logo-image {
+        width: 165px;
+        height: 121px;
+        object-fit: contain;
+    }
+
+    .tagline {
+        margin: 16px 0 32px 0;
+        font-size: 16px;
+        color: #666;
+        text-align: center;
+        font-weight: 400;
+    }
+
+    .illustration-card {
+        --icon-offset: 12px;
+        position: relative;
+        margin: 0 0 40px 0;
+        padding: 16px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #E8F4F8 0%, #F0F8FF 100%);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        max-height: 400px;
+        width: 100%;
+        max-width: 320px;
+    }
+
+    .illustration-img {
+        width: 280px;
+        height: 240px;
+        border-radius: 15px;
+        object-fit: cover;
+    }
+
+    .icon-heart,
+    .icon-shield {
+        position: absolute;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.08), 0 0 0 2px rgba(255,255,255,0.9);
+    }
+
+    .icon-heart {
+        top: calc(-1 * var(--icon-offset));
+        right: calc(-1 * var(--icon-offset));
+        background: #27C46D;
+    }
+
+    .icon-shield {
+        bottom: calc(-1 * var(--icon-offset));
+        left: calc(-1 * var(--icon-offset));
+        background: #00BFFF;
+    }
+
+    .bottom-section {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        margin-top: auto;
+        padding-bottom: 20px;
+    }
+
+    .next-button {
+        width: 100%;
+        max-width: 320px;
+        height: 50px;
+        background-color: #00BFFF;
+        color: white;
+        padding: 14px 20px;
+        border: none;
+        border-radius: 15px;
+        font-size: 16px;
+        font-weight: 600;
+        box-shadow: 0 3px 6px rgba(0, 191, 255, 0.3);
+        cursor: pointer;
+        margin-bottom: 12px;
+    }
+
+    .next-button:hover {
+        background-color: #1C7ED6;
+    }
+
+    .skip-text {
+        font-size: 14px;
+        color: #999;
+        margin-bottom: 16px;
+        cursor: pointer;
+    }
+
+    .progress-indicator {
+        display: flex;
+        gap: 8px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        justify-content: center;
+    }
+
+    .progress-step {
+        width: 24px;
+        height: 4px;
+        background-color: #e0e0e0;
+        border-radius: 2px;
+    }
+
+    .progress-step.active {
+        background-color: #00bfff;
+    }
+
+    /* Onboarding2 Styles */
+    .main-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: #333;
+        text-align: center;
+        margin-bottom: 40px;
+        margin-top: 0;
+    }
+
+    .feature-icons {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 280px;
+        position: relative;
+        margin-bottom: 80px;
+    }
+
+    .connector-line {
+        position: absolute;
+        top: 40px;
+        height: 2px;
+        background-color: #e0e0e0;
+        z-index: 1;
+    }
+
+    .connector-1 {
+        position: absolute;
+        top: 40px;
+        width: 35px;
+        height: 2px;
+        background-color: #e0e0e0;
+        left: 37%;
+        transform: translateX(-100%);
+        z-index: 1;
+    }
+
+    .connector-2 {
+        position: absolute;
+        top: 40px;
+        width: 35px;
+        height: 2px;
+        background-color: #e0e0e0;
+        left: 63%;
+        transform: translateX(0);
+        z-index: 1;
+    }
+
+    .icon-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        z-index: 2;
+    }
+
+    .icon-square {
+        width: 64px;
+        height: 64px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 12px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .camera-icon {
+        background-color: #d4926f;
+    }
+
+    .truck-icon {
+        background-color: #4caf50;
+    }
+
+    .smiley-icon {
+        background-color: #2196f3;
+    }
+
+    .icon-dot {
+        width: 10px;
+        height: 10px;
+        background-color: #2196f3;
+        border-radius: 50%;
+    }
+
+    .features-list {
+        width: 100%;
+        max-width: 320px;
+        margin-bottom: 120px;
+    }
+
+    .feature-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 20px;
+        font-size: 16px;
+        color: #333;
+        line-height: 1.5;
+    }
+
+    .checkmark {
+        width: 20px;
+        height: 20px;
+        background-color: #4caf50;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: bold;
+        margin-right: 12px;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+
+    .navigation-section {
+        margin-top: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-bottom: 40px;
+        width: 100%;
+        max-width: 320px;
+    }
+
+    /* Onboarding3 Styles */
+    .title-section {
+        margin-bottom: 40px;
+    }
+
+    .highlight-text {
+        color: #4ADE80;
+    }
+
+    .illustration-section {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 30px;
+        flex-shrink: 0;
+    }
+
+    .illustration-circle {
+        width: 280px;
+        height: 280px;
+        background: linear-gradient(135deg, #E8F4F8 0%, #F0F8FF 100%);
+        border-radius: 50%;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .line-to-student {
+        position: absolute;
+        top: 130px;
+        left: 150px;
+        width: 80px;
+        height: 1px;
+        border-top: 2px dotted #D3D3D3;
+        transform: rotate(-55deg);
+        transform-origin: left center;
+        z-index: 1;
+    }
+
+    .line-to-parent {
+        position: absolute;
+        top: 130px;
+        right: 150px;
+        width: 80px;
+        height: 1px;
+        border-top: 2px dotted #D3D3D3;
+        transform: rotate(55deg);
+        transform-origin: right center;
+        z-index: 1;
+    }
+
+    .line-to-email {
+        position: absolute;
+        top: 170px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 1px;
+        height: 45px;
+        border-left: 2px dotted #D3D3D3;
+        z-index: 1;
+    }
+
+    .icon-student,
+    .icon-parent,
+    .icon-email {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .icon-student {
+        top: 40px;
+        left: 40px;
+        background-color: #2196F3;
+    }
+
+    .icon-parent {
+        top: 40px;
+        right: 40px;
+        background-color: #FF8A65;
+    }
+
+    .icon-email {
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #F44336;
+        border-radius: 12px;
+    }
+
+    .icon-shield-center {
+        width: 75px;
+        height: 75px;
+        background-color: #4CAF50;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        z-index: 2;
+    }
+
+    .features-section {
+        width: 100%;
+        max-width: 320px;
+        margin-bottom: 20px;
+        flex-shrink: 0;
+    }
+
+    .feature-card {
+        border: 1px solid #ddd;
+        border-radius: 16px;
+        padding: 16px;
+        margin-bottom: 20px;
+        background-color: #fff;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .feature-item-card {
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .feature-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 16px;
+        flex-shrink: 0;
+        margin-top: 4px;
+    }
+
+    .student-verify {
+        background-color: #4CAF50;
+    }
+
+    .parent-consent {
+        background-color: #2196F3;
+    }
+
+    .feature-content h3 {
+        font-size: 16px;
+        font-weight: 800;
+        color: #000;
+        margin: 0 0 6px 0;
+        line-height: 1.3;
+    }
+
+    .feature-content p {
+        font-size: 14px;
+        color: #666;
+        margin: 0;
+        line-height: 1.4;
+    }
+
+    .get-started-button {
+        width: 100%;
+        height: 50px;
+        background-color: #00BFFF;
+        color: white;
+        border: none;
+        border-radius: 15px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-bottom: 16px;
+        box-shadow: 0 3px 6px rgba(0, 191, 255, 0.3);
+    }
+
+    .get-started-button:hover {
+        background-color: #1C7ED6;
+    }
+
+    .disclaimer-text {
+        font-size: 12px;
+        color: #999;
+        margin: 0;
+        text-align: center;
+        line-height: 1.4;
+        padding: 0 20px;
+    }
+</style>
+
+@code {
+    private int currentSlide = 0;
+    private double startX = 0;
+    private double currentX = 0;
+    private bool isDragging = false;
+
+    private void GoToSlide(int slideIndex)
+    {
+        if (slideIndex >= 0 && slideIndex <= 2)
+        {
+            currentSlide = slideIndex;
+            StateHasChanged();
+        }
+    }
+
+    private void OnTouchStart(TouchEventArgs e)
+    {
+        if (e.Touches.Length > 0)
+        {
+            startX = e.Touches[0].ClientX;
+            isDragging = true;
+        }
+    }
+
+    private void OnTouchMove(TouchEventArgs e)
+    {
+        if (isDragging && e.Touches.Length > 0)
+        {
+            currentX = e.Touches[0].ClientX;
+        }
+    }
+
+    private void OnTouchEnd(TouchEventArgs e)
+    {
+        if (isDragging)
+        {
+            double deltaX = currentX - startX;
+            double threshold = 50; // Minimum swipe distance
+
+            if (Math.Abs(deltaX) > threshold)
+            {
+                if (deltaX > 0 && currentSlide > 0)
+                {
+                    // Swipe right - go to previous slide
+                    currentSlide--;
+                    StateHasChanged();
+                }
+                else if (deltaX < 0 && currentSlide < 2)
+                {
+                    // Swipe left - go to next slide
+                    currentSlide++;
+                    StateHasChanged();
+                }
+            }
+
+            isDragging = false;
+        }
+    }
+
+    // Mouse event handlers for desktop support
+    private void OnMouseDown(MouseEventArgs e)
+    {
+        startX = e.ClientX;
+        isDragging = true;
+    }
+
+    private void OnMouseMove(MouseEventArgs e)
+    {
+        if (isDragging)
+        {
+            currentX = e.ClientX;
+        }
+    }
+
+    private void OnMouseUp(MouseEventArgs e)
+    {
+        if (isDragging)
+        {
+            double deltaX = currentX - startX;
+            double threshold = 50; // Minimum swipe distance
+
+            if (Math.Abs(deltaX) > threshold)
+            {
+                if (deltaX > 0 && currentSlide > 0)
+                {
+                    // Swipe right - go to previous slide
+                    currentSlide--;
+                    StateHasChanged();
+                }
+                else if (deltaX < 0 && currentSlide < 2)
+                {
+                    // Swipe left - go to next slide
+                    currentSlide++;
+                    StateHasChanged();
+                }
+            }
+
+            isDragging = false;
+        }
+    }
+
+    private void SkipOnboarding()
+    {
+        Navigation.NavigateTo("/login");
+    }
+
+    private void GetStarted()
+    {
+        Navigation.NavigateTo("/signup");
+    }
+}

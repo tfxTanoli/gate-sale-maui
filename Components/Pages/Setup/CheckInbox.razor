@@ -1,0 +1,124 @@
+@page "/checkinbox"
+@inject NavigationManager Navigation
+
+<div class="check-inbox-container">
+    <!-- Mailbox Image -->
+    <div class="illustration-section">
+        <img src="/images/mailbox.png" alt="Mailbox" class="mailbox-image" />
+    </div>
+
+    <!-- Content section -->
+    <div class="content-section">
+        <h1 class="main-title">Check Your Inbox</h1>
+        <p class="description">
+            We've sent you a verification email.<br>
+            Please check your inbox and click the<br>
+            link to verify your account.
+        </p>
+    </div>
+
+    <!-- Button section -->
+    <div class="button-section">
+        <button class="email-client-button" @onclick="OpenEmailClient">
+            Open Email Client
+        </button>
+    </div>
+
+    <!-- Footer section -->
+    <div class="footer-section">
+        <p class="footer-text">
+            Didn't receive the email? Check your spam folder
+        </p>
+    </div>
+</div>
+
+<style>
+    .check-inbox-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background-color: #FFFFFF;
+        min-height: 100vh;
+        width: 375px;
+        margin: 0 auto;
+    }
+
+    .illustration-section {
+        margin-bottom: 60px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .mailbox-image {
+       margin-top: 100px;
+        width: 320px;
+        height: 255px;
+        object-fit: contain;
+    }
+
+    .content-section {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .main-title {
+        font-size: 24px;
+        font-weight: 800;
+        color: #000000;
+        margin: 0 0 20px 0;
+        line-height: 1.2;
+    }
+
+    .description {
+        font-size: 16px;
+        color: #666666;
+        line-height: 1.5;
+        margin: 0;
+    }
+
+    .button-section {
+        width: 100%;
+        max-width: 320px;
+        margin-bottom: 30px;
+    }
+
+    .email-client-button {
+        width: 100%;
+        height: 50px;
+        background-color: #87CEEB;
+        color: #333333;
+        border: none;
+        border-radius: 15px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(135, 206, 235, 0.3);
+    }
+
+        .email-client-button:hover {
+            background-color: #7BC4E8;
+        }
+
+    .footer-section {
+        margin-top: auto;
+        padding-top: 20px;
+    }
+
+    .footer-text {
+        font-size: 14px;
+        color: #999999;
+        text-align: center;
+        margin: 0;
+        line-height: 1.4;
+    }
+</style>
+
+@code {
+    private void OpenEmailClient()
+    {
+        Navigation.NavigateTo("/parentalconsent");
+    }
+}

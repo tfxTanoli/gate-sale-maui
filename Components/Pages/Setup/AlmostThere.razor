@@ -1,0 +1,257 @@
+@page "/almostthere"
+@inject NavigationManager Navigation
+
+<div class="almost-there-container">
+    <!-- Header with back button and progress -->
+    <div class="header-section">
+        <button class="back-button" @onclick="GoBack">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M15 18L9 12L15 6" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+        <div class="progress-dots">
+            <div class="progress-dot inactive"></div>
+            <div class="progress-dot inactive"></div>
+            <div class="progress-dot active"></div>
+        </div>
+    </div>
+
+    <!-- Title section -->
+    <div class="title-section">
+        <h1 class="main-title">Almost There!</h1>
+        <div class="celebration-emojis">🎉🚀</div>
+    </div>
+
+    <!-- Phone mockup with image -->
+    <div class="email-card">
+        <img src="/images/emailsent.png" alt="Email Sent" class="email-image" />
+    </div>
+
+    <!-- Description section -->
+    <div class="description-section">
+        <p class="description-text">
+            We've sent an email to your parent.<br>
+            As soon as they approve, you'll be<br>
+            ready to start <span class="buying-text">buying</span> & <span class="selling-text">selling</span>!
+        </p>
+    </div>
+
+    <!-- Buttons section -->
+    <div class="buttons-section">
+        <button class="window-shop-button" @onclick="WindowShop">
+            🛍️ Window Shop While You Wait
+        </button>
+
+        <button class="back-home-button" @onclick="BackToHome">
+            🏠 Back to Home
+        </button>
+    </div>
+
+    <!-- Footer section -->
+    <div class="footer-section">
+        <p class="help-text">
+            Need help? <span class="contact-link" @onclick="ContactSupport">Contact Support</span>
+        </p>
+    </div>
+</div>
+
+<style>
+    .almost-there-container {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background-color: #F8F9FA;
+        min-height: 100vh;
+        width: 375px;
+        margin: 0 auto;
+        max-width: 100%;
+        position: relative;
+    }
+
+    .header-section {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 20px;
+        margin-top: 10px;
+    }
+
+    .back-button {
+        background: none;
+        border: none;
+        padding: 8px;
+        cursor: pointer;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    
+    .progress-dots {
+        display: flex;
+        gap: 8px;
+    }
+
+    .progress-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+    }
+
+    .progress-dot.inactive {
+        background-color: #D1D5DB;
+    }
+
+    .progress-dot.active {
+        background-color: #3B82F6;
+    }
+
+    .title-section {
+        text-align: center;
+        margin: 20px 0 10px 0;
+    }
+
+    .main-title {
+        font-size: 32px;
+        font-weight: 800;
+        color: #000000;
+        margin: 0 0 8px 0;
+        line-height: 1.2;
+    }
+
+    .celebration-emojis {
+        font-size: 24px;
+    }
+    .email-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+     .email-image {
+        width: 300px;
+        height: 300px;
+        object-fit: contain;
+        margin-bottom: 20px;
+    }
+    
+
+    
+
+
+    .description-section {
+        text-align: center;
+        margin: 0 20px 30px 20px;
+    }
+
+    .description-text {
+        font-size: 16px;
+        color: #666666;
+        line-height: 1.5;
+        margin: 0;
+    }
+
+    .buying-text {
+        color: #10B981;
+        font-weight: 600;
+    }
+
+    .selling-text {
+        color: #EF4444;
+        font-weight: 600;
+    }
+
+    .buttons-section {
+        padding: 0 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 15px;
+    }
+
+    .window-shop-button {
+        width: 100%;
+        height: 50px;
+        background-color: #3B82F6;
+        color: white;
+        border: none;
+        border-radius: 15px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 0 3px 8px rgba(59, 130, 246, 0.3);
+    }
+
+    .window-shop-button:hover {
+        background-color: #2563EB;
+    }
+
+    .back-home-button {
+        width: 100%;
+        height: 50px;
+        background-color: white;
+        color: #666666;
+        border: 1px solid #E5E7EB;
+        border-radius: 15px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+  
+
+    .footer-section {
+        text-align: center;
+        margin-top: auto;
+        padding: 20px;
+    }
+
+    .help-text {
+        font-size: 14px;
+        color: #9CA3AF;
+        margin: 0;
+    }
+
+    .contact-link {
+        color: #3B82F6;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .contact-link:hover {
+        text-decoration: underline;
+    }
+</style>
+
+@code {
+    private void GoBack()
+    {
+        Navigation.NavigateTo("/parentalconsent");
+    }
+
+    private void WindowShop()
+    {
+        Navigation.NavigateTo("/marketplace");
+    }
+
+    private void BackToHome()
+    {
+        Navigation.NavigateTo("/login");
+    }
+
+    private void ContactSupport()
+    {
+        // Implement contact support logic
+    }
+}

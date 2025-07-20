@@ -1,0 +1,391 @@
+@page "/signup"
+@inject NavigationManager Navigation
+
+<div class="signup-container">
+    <!-- Header -->
+    <div class="header-section">
+        <h1 class="main-title">Let's Get You Started</h1>
+        <p class="subtitle">Create your student account in just a few steps</p>
+    </div>
+
+    <!-- Illustration -->
+    <div class="illustration-section">
+        <div class="illustration-circle">
+            <img src="/images/bagpack.jpg" alt="Backpack Logo" class="logo-image" />
+        </div>
+    </div>
+
+    <!-- Form -->
+    <div class="form-section">
+        <!-- Name Fields -->
+        <div class="name-row">
+            <div class="input-group">
+                <label class="input-label">First Name</label>
+                <input type="text" class="form-input" placeholder="Enter first name" @bind="firstName" />
+            </div>
+            <div class="input-group">
+                <label class="input-label">Last Name</label>
+                <input type="text" class="form-input" placeholder="Enter last name" @bind="lastName" />
+            </div>
+        </div>
+
+        <!-- Email Field -->
+        <div class="input-group">
+            <label class="input-label">School Email Address</label>
+            <div class="input-with-icon">
+                <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M20 4H4C2.9 4 2.01 4.9 2.01 6L2 18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z" fill="#999"/>
+                </svg>
+                <input type="email" class="form-input with-icon" placeholder="your.email@school.edu" @bind="email" />
+            </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="input-group">
+            <label class="input-label">Password</label>
+            <div class="input-with-icon">
+                <svg class="input-icon-left" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 17C10.89 17 10 16.1 10 15C10 13.89 10.89 13 12 13C13.11 13 14 13.89 14 15C14 16.1 13.11 17 12 17ZM18 8C19.1 8 20 8.9 20 10V20C20 21.1 19.1 22 18 22H6C4.9 22 4 21.1 4 20V10C4 8.9 4.9 8 6 8H7V6C7 3.24 9.24 1 12 1C14.76 1 17 3.24 17 6V8H18ZM12 3C10.34 3 9 4.34 9 6V8H15V6C15 4.34 13.66 3 12 3Z" fill="#999"/>
+                </svg>
+                <input type="@(showPassword ? "text" : "password")" class="form-input with-icon-both" placeholder="Create a password" @bind="password" />
+                <button type="button" class="eye-button" @onclick="TogglePasswordVisibility">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12C2.73 16.39 7 19.5 12 19.5S21.27 16.39 23 12C21.27 7.61 17 4.5 12 4.5ZM12 17C9.24 17 7 14.76 7 12S9.24 7 12 7S17 9.24 17 12S14.76 17 12 17ZM12 9C10.34 9 9 10.34 9 12S10.34 15 12 15S15 13.66 15 12S13.66 9 12 9Z" fill="#999"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Confirm Password Field -->
+        <div class="input-group">
+            <label class="input-label">Confirm Password</label>
+            <div class="input-with-icon">
+                <svg class="input-icon-left" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 17C10.89 17 10 16.1 10 15C10 13.89 10.89 13 12 13C13.11 13 14 13.89 14 15C14 16.1 13.11 17 12 17ZM18 8C19.1 8 20 8.9 20 10V20C20 21.1 19.1 22 18 22H6C4.9 22 4 21.1 4 20V10C4 8.9 4.9 8 6 8H7V6C7 3.24 9.24 1 12 1C14.76 1 17 3.24 17 6V8H18ZM12 3C10.34 3 9 4.34 9 6V8H15V6C15 4.34 13.66 3 12 3Z" fill="#999"/>
+                </svg>
+                <input type="@(showConfirmPassword ? "text" : "password")" class="form-input with-icon-both" placeholder="Confirm your password" @bind="confirmPassword" />
+                <button type="button" class="eye-button" @onclick="ToggleConfirmPasswordVisibility">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12C2.73 16.39 7 19.5 12 19.5S21.27 16.39 23 12C21.27 7.61 17 4.5 12 4.5ZM12 17C9.24 17 7 14.76 7 12S9.24 7 12 7S17 9.24 17 12S14.76 17 12 17ZM12 9C10.34 9 9 10.34 9 12S10.34 15 12 15S15 13.66 15 12S13.66 9 12 9Z" fill="#999"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Terms Checkbox -->
+        <div class="checkbox-group">
+            <label class="checkbox-label">
+                <input type="checkbox" class="checkbox-input" @bind="agreeToTerms" />
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-text">I am a student and agree to the <a href="#" class="terms-link">Terms of Use</a></span>
+            </label>
+        </div>
+
+        <!-- Next Button -->
+        <button class="next-button" @onclick="HandleSignup">
+            Next <span class="next-icon">→</span>
+        </button>
+
+        <!-- Sign In Link -->
+        <p class="signin-text">
+            Already have an account? <a href="#" class="signin-link" @onclick="GoToSignIn">Sign in</a>
+        </p>
+    </div>
+</div>
+
+<style>
+    .signup-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: linear-gradient(90deg, #FFFFFF 0%, #F8FCFF 40%, #F0F8FF 70%, #E8F4FD 100%);
+        min-height: 100vh;
+        max-width: 375px;
+        width: 100%;
+        margin: 0 auto;
+        position: relative;
+        box-sizing: border-box;
+    }
+
+    .header-section {
+        text-align: center;
+        margin-top: 40px;
+        margin-bottom: 30px;
+    }
+
+    .main-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: #000000;
+        margin: 0 0 8px 0;
+        line-height: 1.2;
+    }
+
+    .subtitle {
+        font-size: 16px;
+        color: #666666;
+        margin: 0;
+        line-height: 1.4;
+    }
+
+    .illustration-section {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 40px;
+    }
+
+    .illustration-circle {
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+   .logo-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px; /* Optional: keeps corners rounded like the container */
+}
+
+
+    .form-section {
+        width: 100%;
+        max-width: 320px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .name-row {
+        display: flex;
+        gap: 12px;
+    }
+
+    .input-group {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    .input-label {
+        font-size: 14px;
+        font-weight: 600;
+        color: #333333;
+        margin-bottom: 8px;
+    }
+
+    .form-input {
+        width: 100%;
+        height: 48px;
+        padding: 12px 16px;
+        border: 1px solid #E0E0E0;
+        border-radius: 8px;
+        font-size: 16px;
+        color: #333333;
+        background-color: #FAFAFA;
+        box-sizing: border-box;
+    }
+
+    .form-input:focus {
+        outline: none;
+        border-color: #00BFFF;
+        box-shadow: 0 0 0 2px rgba(0, 191, 255, 0.1);
+        background-color: white;
+    }
+
+    .form-input::placeholder {
+        color: #AAAAAA;
+    }
+
+    .input-with-icon {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 16px;
+        z-index: 2;
+    }
+
+    .input-icon-left {
+        position: absolute;
+        left: 16px;
+        z-index: 2;
+    }
+
+    .with-icon {
+        padding-left: 48px;
+    }
+
+    .with-icon-both {
+        padding-left: 48px;
+        padding-right: 48px;
+    }
+
+    .eye-button {
+        position: absolute;
+        right: 16px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+    }
+
+    .checkbox-group {
+        margin: 8px 0;
+    }
+
+    .checkbox-label {
+        display: flex;
+        align-items: flex-start;
+        cursor: pointer;
+        font-size: 14px;
+        line-height: 1.5;
+        color: #374151;
+    }
+
+    .checkbox-input {
+        display: none;
+    }
+
+    .checkbox-custom {
+        width: 18px;
+        height: 18px;
+        border: 2px solid #CCCCCC;
+        border-radius: 4px;
+        margin-right: 12px;
+        margin-top: 2px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+    }
+
+    .checkbox-input:checked + .checkbox-custom {
+        background-color: #00BFFF;
+        border-color: #00BFFF;
+    }
+
+    .checkbox-input:checked + .checkbox-custom::after {
+        content: '✓';
+        color: white;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .checkbox-text {
+        flex: 1;
+    }
+
+    .terms-link {
+        color: #00BFFF;
+        text-decoration: none;
+    }
+
+    .terms-link:hover {
+        text-decoration: underline;
+    }
+
+    .next-button {
+        width: 100%;
+    height: 50px;
+    background-color: #00BFFF;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 12px;
+    box-shadow: 0 3px 8px rgba(0, 191, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    position: relative;
+    }
+
+    .next-icon {
+        font-size: 28px; /* You can increase this size as needed */
+        font-weight: bold;
+        line-height: 1;
+       margin-bottom: 5px;
+    }
+
+    .signin-text {
+        text-align: center;
+        font-size: 14px;
+        color: #6B7280;
+        margin: 20px 0 0 0;
+    }
+
+    .signin-link {
+        color: #00BFFF;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .signin-link:hover {
+        text-decoration: underline;
+    }
+</style>
+
+@code {
+    private string firstName = "";
+    private string lastName = "";
+    private string email = "";
+    private string password = "";
+    private string confirmPassword = "";
+    private bool agreeToTerms = false;
+    private bool showPassword = false;
+    private bool showConfirmPassword = false;
+
+    private void TogglePasswordVisibility()
+    {
+        showPassword = !showPassword;
+    }
+
+    private void ToggleConfirmPasswordVisibility()
+    {
+        showConfirmPassword = !showConfirmPassword;
+    }
+
+    private bool IsFormValid()
+    {
+        return !string.IsNullOrWhiteSpace(firstName) &&
+               !string.IsNullOrWhiteSpace(lastName) &&
+               !string.IsNullOrWhiteSpace(email) &&
+               !string.IsNullOrWhiteSpace(password) &&
+               !string.IsNullOrWhiteSpace(confirmPassword) &&
+               password == confirmPassword &&
+               agreeToTerms;
+    }
+
+    private void HandleSignup()
+    {
+        // Navigate directly to login page without validation
+        Navigation.NavigateTo("/login");
+    }
+
+    private void GoToSignIn()
+    {
+        // Navigate to login page
+        Navigation.NavigateTo("/login");
+    }
+}
