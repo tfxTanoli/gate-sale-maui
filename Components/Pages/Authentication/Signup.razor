@@ -88,7 +88,7 @@
 
         <!-- Sign In Link -->
         <p class="signin-text">
-            Already have an account? <a href="#" class="signin-link" @onclick="GoToSignIn">Sign in</a>
+            Already have an account? <button type="button" class="signin-link" @onclick="GoToSignIn">Sign in</button>
         </p>
     </div>
 </div>
@@ -339,6 +339,12 @@
         color: #00BFFF;
         text-decoration: none;
         font-weight: 600;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        font-size: inherit;
+        font-family: inherit;
     }
 
     .signin-link:hover {

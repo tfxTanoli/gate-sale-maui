@@ -1,0 +1,321 @@
+@page "/buyers-help"
+@inject NavigationManager Navigation
+
+<div class="buyers-help-container">
+    <!-- Header -->
+    <div class="header-section">
+        <button class="back-button" @onclick="GoBack">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M15 18L9 12L15 6" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+        <span class="step-indicator">Step 3 of 5</span>
+    </div>
+
+    <!-- Header Separator Line -->
+    <div class="header-separator"></div>
+
+    <!-- Main Content Section -->
+    <div class="main-content-section">
+        <!-- Title Section -->
+        <div class="title-section">
+            <h1 class="page-title">Help Buyers Find Your Item</h1>
+            <p class="page-subtitle">Add keywords and a description to make your listing more discoverable</p>
+        </div>
+
+        <!-- Message Icon -->
+        <div class="message-icon-section">
+            <img src="/images/message.png" alt="Message" class="message-icon" />
+        </div>
+
+        <!-- Keywords Section -->
+        <div class="form-section">
+            <label class="form-label">Keywords</label>
+            <div class="input-container">
+                <input type="text" class="form-input" placeholder="e.g. Nike, running shoes, size 9" @bind="keywords" />
+                <div class="input-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M20.59 13.41L13.42 20.58C13.2343 20.766 12.9949 20.8709 12.745 20.8709C12.4951 20.8709 12.2557 20.766 12.07 20.58L11.41 19.92L2.59 11.1C2.40426 10.9143 2.29935 10.6749 2.29935 10.425C2.29935 10.1751 2.40426 9.93568 2.59 9.75L9.76 2.58C9.94568 2.39426 10.1851 2.28935 10.435 2.28935C10.6849 2.28935 10.9243 2.39426 11.11 2.58L19.92 11.39L20.58 12.05C20.766 12.2357 20.8709 12.4751 20.8709 12.725C20.8709 12.9749 20.766 13.2143 20.58 13.4L20.59 13.41Z" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+            </div>
+            <p class="helper-text">Separate keywords with commas</p>
+        </div>
+
+        <!-- Description Section -->
+        <div class="form-section">
+            <label class="form-label">Description</label>
+            <div class="textarea-container">
+                <textarea class="form-textarea" placeholder="Tell buyers about your item's condition, why you're selling it, or any special features..." @bind="description" @oninput="UpdateCharacterCount"></textarea>
+                <div class="textarea-icon">
+                    <svg width="14" height="24" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14 24H0V0H14V24Z" stroke="#E5E7EB"/>
+                        <g clip-path="url(#clip0_2_937)">
+                        <path d="M14 19H0V3H14V19Z" stroke="#E5E7EB"/>
+                        <path d="M9 5C9 5.55313 8.55313 6 8 6H1C0.446875 6 0 5.55313 0 5C0 4.44687 0.446875 4 1 4H8C8.55313 4 9 4.44687 9 5ZM9 13C9 13.5531 8.55313 14 8 14H1C0.446875 14 0 13.5531 0 13C0 12.4469 0.446875 12 1 12H8C8.55313 12 9 12.4469 9 13ZM0 9C0 8.44688 0.446875 8 1 8H13C13.5531 8 14 8.44688 14 9C14 9.55312 13.5531 10 13 10H1C0.446875 10 0 9.55312 0 9ZM14 17C14 17.5531 13.5531 18 13 18H1C0.446875 18 0 17.5531 0 17C0 16.4469 0.446875 16 1 16H13C13.5531 16 14 16.4469 14 17Z" fill="#D1D5DB"/>
+                        </g>
+                        <defs>
+                        <clipPath id="clip0_2_937">
+                        <rect width="14" height="16" fill="white" transform="translate(0 3)"/>
+                        </clipPath>
+                        </defs>
+                    </svg>
+                </div>
+            </div>
+            <div class="description-footer">
+                <p class="helper-text">Be descriptive to attract more buyers</p>
+                <div class="character-count-container">
+                    <span class="character-count">@characterCount/500</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <div class="footer-section">
+        <!-- Next Button -->
+        <button class="next-button" @onclick="GoNext">Next</button>
+    </div>
+</div>
+
+<style>
+    .buyers-help-container {
+        display: flex;
+        flex-direction: column;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        min-height: 100vh;
+        background-color: #F8F9FA;
+        max-width: 400px;
+        width: 100%;
+        margin: 0 auto;
+        box-sizing: border-box;
+    }
+
+    .header-section {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 20px 16px 20px;
+        background-color: #FFFFFF;
+    }
+
+    .back-button {
+        background: none;
+        border: none;
+        padding: 8px;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: background-color 0.2s ease;
+    }
+
+    .back-button:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    .step-indicator {
+        font-size: 14px;
+        color: #9CA3AF;
+        font-weight: 500;
+    }
+
+    .header-separator {
+        height: 1px;
+        background-color: #E5E7EB;
+        width: 100%;
+    }
+
+    .main-content-section {
+        flex: 1;
+        padding: 24px 20px;
+        background-color: #F8F9FA;
+    }
+
+    .title-section {
+        margin-bottom: 32px;
+    }
+
+    .page-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: #1F2937;
+        margin: 0 0 8px 0;
+        line-height: 1.2;
+    }
+
+    .page-subtitle {
+        font-size: 16px;
+        color: #6B7280;
+        margin: 0;
+        line-height: 1.4;
+    }
+
+    .message-icon-section {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 32px;
+    }
+
+    .message-icon {
+        width: 100px;
+        height: 100px;
+        object-fit: contain;
+    }
+
+    .form-section {
+        margin-bottom: 24px;
+    }
+
+    .form-label {
+        display: block;
+        font-size: 16px;
+        font-weight: 600;
+        color: #1F2937;
+        margin-bottom: 8px;
+    }
+
+    .input-container {
+        position: relative;
+        margin-bottom: 8px;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 16px 48px 16px 16px;
+        border: 1px solid #D1D5DB;
+        border-radius: 12px;
+        font-size: 16px;
+        background-color: #FFFFFF;
+        box-sizing: border-box;
+        transition: border-color 0.2s ease;
+    }
+
+    .form-input:focus {
+        outline: none;
+        border-color: #42A5F5;
+        box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.1);
+    }
+
+    .form-input::placeholder {
+        color: #9CA3AF;
+    }
+
+    .input-icon {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+    }
+
+    .textarea-container {
+        position: relative;
+        margin-bottom: 8px;
+    }
+
+    .form-textarea {
+        width: 100%;
+        min-height: 120px;
+        padding: 16px 40px 16px 16px;
+        border: 1px solid #D1D5DB;
+        border-radius: 12px;
+        font-size: 16px;
+        background-color: #FFFFFF;
+        box-sizing: border-box;
+        resize: vertical;
+        font-family: inherit;
+        transition: border-color 0.2s ease;
+    }
+
+    .textarea-icon {
+        position: absolute;
+        bottom: 16px;
+        right: 16px;
+        pointer-events: none;
+        opacity: 0.6;
+    }
+
+    .form-textarea:focus {
+        outline: none;
+        border-color: #42A5F5;
+        box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.1);
+    }
+
+    .form-textarea::placeholder {
+        color: #9CA3AF;
+    }
+
+    .description-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 8px;
+    }
+
+    .character-count-container {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .character-count {
+        font-size: 12px;
+        color: #9CA3AF;
+        font-weight: 500;
+    }
+
+    .helper-text {
+        font-size: 14px;
+        color: #6B7280;
+        margin: 0;
+    }
+
+    .footer-section {
+        padding: 20px;
+        background-color: #FFFFFF;
+        border-top: 1px solid #E5E7EB;
+    }
+
+    .next-button {
+        width: 100%;
+        padding: 16px;
+        background: linear-gradient(135deg, #81D4FA 0%, #4FC3F7 100%);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+   
+</style>
+
+@code {
+    private string keywords = "";
+    private string description = "";
+    private int characterCount = 0;
+
+    private void GoBack()
+    {
+        Navigation.NavigateTo("/add-photos-videos");
+    }
+
+    private void UpdateCharacterCount(ChangeEventArgs e)
+    {
+        description = e.Value?.ToString() ?? "";
+        characterCount = description.Length;
+        if (characterCount > 500)
+        {
+            description = description.Substring(0, 500);
+            characterCount = 500;
+        }
+        StateHasChanged();
+    }
+
+    private void GoNext()
+    {
+        // Navigate to next step
+        Navigation.NavigateTo("/set-your-price");
+    }
+}
